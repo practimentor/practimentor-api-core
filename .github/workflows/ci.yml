@@ -1,0 +1,28 @@
+name: CI API core
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  compilar-y-probar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restaurar dependencias
+        run: dotnet restore tests/Academic.Api.Tests
+
+      - name: Compilar
+        run: dotnet build Academic.Api.csproj --no-restore -warnaserror
+
+      - name: Ejecutar pruebas
+        run: dotnet test tests/Academic.Api.Tests
