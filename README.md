@@ -20,3 +20,17 @@ dotnet run    # GET /health
 ## Cómo contribuir
 
 Lee [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## Integración continua
+
+El workflow `.github/workflows/ci.yml` se ejecuta en cada Pull Request hacia `main` y en cada push a `main`. Restaura dependencias, compila con `-warnaserror` y ejecuta las pruebas. La rama `main` exige que el check `compilar-y-probar` pase antes de fusionar.
+
+Para reproducirlo en local:
+
+```bash
+dotnet restore tests/Academic.Api.Tests
+dotnet build Academic.Api.csproj --no-restore -warnaserror
+dotnet test tests/Academic.Api.Tests
+```
+
+El workflow `cd.yml` se ejecuta al crear una etiqueta `v*`: construye la imagen Docker y la publica en GitHub Container Registry (`ghcr.io/practimentor/practimentor-api-core`).
